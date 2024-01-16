@@ -13,10 +13,21 @@ def extract_numbers_from_html(html_file):
 
     return numbers
 
+def convert_minutes_to_dhms(minutes):
+    days = minutes // (24 * 60)
+    hours = (minutes % (24 * 60)) // 60
+    minutes = (minutes % (24 * 60)) % 60
+    return f"{days}:{hours:02d}:{minutes:02d}:00"
+
 directory = "data"
 file_count = 0
 total_sum = 0
 subject_sums = {}
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
+print("\033[32m授業動画時間\033[0m")
 
 for filename in os.listdir(directory):
     if filename.endswith(".html"):
@@ -27,7 +38,7 @@ for filename in os.listdir(directory):
         file_sum = sum(numbers)
         total_sum += file_sum
 
-        print(f"{file_sum} \t分: {filename}")
+        print(f"{convert_minutes_to_dhms(file_sum)} \t: {filename}")
 
         # 教科別の合計時間を計算
         subject = filename.split(" ")[0]
@@ -43,6 +54,6 @@ print(f"\n合計ファイル数: {file_count}")
 # 教科別の合計時間を表示
 print("\n教科別合計時間:")
 for subject, sum in subject_sums.items():
-    print(f"{sum}\t分: {subject}")
+    print(f"{convert_minutes_to_dhms(sum)}\t: {subject}")
 
-print(f"\n全教科合計時間\n {total_sum}分")
+print(f"\n全教科合計時間\n {convert_minutes_to_dhms(total_sum)}")

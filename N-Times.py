@@ -44,6 +44,8 @@ file_count = 0
 if not os.path.exists(directory):
     os.makedirs(directory)
 
+print("\033[32m動画時間\033[0m")
+
 for filename in os.listdir(directory):
     if filename.endswith(".html"):
         html_file = os.path.join(directory, filename)
